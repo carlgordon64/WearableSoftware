@@ -1,5 +1,15 @@
  PImage photo;
  
+ //colors
+ 
+ color lightgrey = (#f1f3f2);
+ color mediumgrey = (#eaeaea);
+ color darkgrey = (#383838);
+   color indicate = (mediumgrey);
+   int c = 255;
+boolean colorDown = false;
+ 
+ float selector = 0;
  int texSiz=14;
  float texHeight=height/2-230;
  float expandFinder=0;
@@ -59,6 +69,9 @@ void Update()
          
     }
         if(keyCode == SHIFT){
+          selector=0;
+           colorDown = false;
+            c=255;
         x=0;
         y2=0;
       //slows down the loop to crete a toggle effect on key event
@@ -79,8 +92,8 @@ void Update()
 
 void draw(){
   frameRate(120);
-  background(146,211,194);
-  image(photo, 0, 0);
+  background(lightgrey);
+  //image(photo, 0, 0);
    float targetX = 40;
   float dx = targetX - x;
   x += dx * easing;
@@ -171,13 +184,13 @@ void draw(){
         
       }
 }
- carousel_indicator();
+ carousel_indicator2();
   Update();
-  fill(255);
+  fill(mediumgrey);
   rectMode(CENTER);
- 
+
   textSize(texSiz);
-  stroke(255);
+  noStroke();
   //
 
  
@@ -245,54 +258,75 @@ void draw(){
   browserdata();
  
 }
-void carousel_indicator(){
-  strokeWeight(2);
-  stroke(255);
+
+//second carousel indicator design
+void carousel_indicator2(){
+
+  selector=0;
+  //.33 needs to become a global variable that resets on press of shift
+
   
-   noFill();
-      //shape
-   //l
-  ellipse(width/2-20,height/2+200,40,40);
-  //r
-  ellipse(width/2+20,height/2+200,40,40);
-  fill(163,182,196);
+  strokeWeight(2);
   noStroke();
-   ellipse(width/2,height/2+200,50,50);
-   strokeWeight(2);
-  stroke(255);
-   //connectors
-   line(623,560,655,560);
-    line(623,600,655,600);
-fill(255);
-//indicator
-float push=0;
+  //container for carousel indicator 
+  //rect(width/2,height/2+260,200,60);
+  //
+  //placeholders
+  fill(mediumgrey);
+  rect(width/2,height/2+200,60,10);
+  rect(width/2-100,height/2+200,60,10);
+   rect(width/2+100,height/2+200,60,10);
+  
+ //
+//noFill();
+
 if(finderON==true){
-//center
-push=50;
-  //ellipse(width/2+push,height/2+200,20,20);
+  colorDown = true;
+  //if color down is true and c is greater than 0
+  //start subtracting color
+      if (colorDown && c > 80) c-=7;
+       //else if color down is false and c is less than 255
+  //start adding color
+  else if (colorDown==false && c < 255) c+=2;
+  fill(c, c, c);
+  rect(width/2,height/2+200,60,10);
+    
 }
-
-
 if(playerON==true){
-   //left
-   push=0;
- //  ellipse(width/2+push,height/2+200,20,20);
+   colorDown = true;
+    //if color down is true and c is greater than 0
+  //start subtracting color
+      if (colorDown && c > 80) c-=7;
+       //else if color down is false and c is less than 255
+  //start adding color
+  else if (colorDown==false && c < 255) c+=2;
+  fill(c, c, c);
+   rect(width/2-100,height/2+200,60,10);
+   
    
 }
 if(browserON==true){
-   //right
-    push=100;
-  //ellipse(width/2+push,height/2+200,20,20);
+   colorDown = true;
+  //if color down is true and c is greater than 0
+  //start subtracting color
+      if (colorDown && c > 80) c-=7;
+       //else if color down is false and c is less than 255
+  //start adding color
+  else if (colorDown==false && c < 255) c+=2;
+  fill(c, c, c);
+  rect(width/2+100,height/2+200,60,10);
  
 }
-float push2=lerp(-20,20,push/100);
-ellipse(width/2+push2,height/2+200,20,20);
 }
 
+
+//call all boxes
 void player(float x,float y,float w, float h){
     //Player
     //center
+     fill(darkgrey);
   text("Player",(width/2-230)-(texSiz/2*3),height/2-230);
+   fill(mediumgrey);
    rect(x,y,w,h);
    //
   
@@ -300,7 +334,9 @@ void player(float x,float y,float w, float h){
 void finder(float x,float y,float w, float h){
     //Finder
   //center
+   fill(darkgrey);
   text("Finder",(width/2)-(texSiz/2*3.5),height/2-230);
+   fill(mediumgrey);
   rect(x,y,w,h);
   //
   
@@ -308,7 +344,9 @@ void finder(float x,float y,float w, float h){
 void browser(float x,float y,float w, float h){
    //Browser
      //center
+      fill(darkgrey);
    text("Browser",(width/2+230)-(texSiz/2*3.5),height/2-230);
+     fill(mediumgrey);
     rect(x,y,w,h);
   
 }
