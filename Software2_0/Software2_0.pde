@@ -19,6 +19,7 @@ boolean colorDown = false;
 float y=200;
 float y2=200;
    float y3=0;
+   float y4=0;
 float reversey=0;
 float easing = 0.03;
 float easing2 = 0.2;
@@ -92,9 +93,11 @@ void Update()
 
 void draw(){
   frameRate(120);
-  background(lightgrey);
+  background(#f1f3f2);
   //image(photo, 0, 0);
    float targetX = 40;
+   float targetFocusHeight = height;
+   float targetFocusWidth = width;
   float dx = targetX - x;
   x += dx * easing;
   float targetY = height*0.9;
@@ -103,9 +106,13 @@ void draw(){
   float dy = targetY - y;
    float dy2 = targetY2 - y2;
     float dy3 = target3 - y3;
+    
+     float fullscreenW = targetY2 - y2;
   y += dy * easing2;
    y2 += dy2 * easing2;
     y3 += dy3 * easing;
+    //if set to y4 shape will fill screen width
+    y4 += fullscreenW *easing;
   
   //ellipse(x, y, 66, 66);
      fx=width/2;
@@ -327,7 +334,11 @@ void player(float x,float y,float w, float h){
      fill(darkgrey);
   text("Player",(width/2-230)-(texSiz/2*3),height/2-230);
    fill(mediumgrey);
-   rect(x,y,w,h);
+      if(hoverState=="active"){
+       rect(x,y,width,height);
+     }else{
+    rect(x,y,w,h);
+  }
    //
   
 }
@@ -337,7 +348,11 @@ void finder(float x,float y,float w, float h){
    fill(darkgrey);
   text("Finder",(width/2)-(texSiz/2*3.5),height/2-230);
    fill(mediumgrey);
-  rect(x,y,w,h);
+     if(hoverState=="active"){
+       rect(x,y,width,height);
+     }else{
+    rect(x,y,w,h);
+  }
   //
   
 }
@@ -347,7 +362,11 @@ void browser(float x,float y,float w, float h){
       fill(darkgrey);
    text("Browser",(width/2+230)-(texSiz/2*3.5),height/2-230);
      fill(mediumgrey);
+     if(hoverState=="active"){
+       rect(x,y,width,height);
+     }else{
     rect(x,y,w,h);
+  }
   
 }
 void finderdata(){
