@@ -1,11 +1,14 @@
 # WearableSoftware
-Here I have re designed the carousel indicator, cleaning up the animation by adding a color transition and moving into a more flat / material design style.
+
+In this step I have started buiding the status bar for the top corner. This will provide diagnostic information about the connection between the garment and the software; in particular whether the connection is true, and whether the garment is transmitting data. The current time is displayed to the far right, this is to save the user from needing to minimize the window to check the time. 
+
+I have tweaked the fonts a bit and brought in Inconsolata Regular-16 for the top and Helvetica-18 for the carousel.
 
 Whats Next?
 
-- Make cards/panels open to fullscreen on toggle but pad the content within them by about 50px.
+- Smooth out the animation of the carousel. This might involve redesigning how the user iterates through the categories.
 
-- Add the status text to the top right corner.
+- Complete the status indicators with visual cues for Garment Status and Input.
 
-- cards should have individual labels that are displayed on touch rather than displaying all labels at once (probably use color fade effect for this too).
+- Connect to Arduino UNO and test how the sketch responds to serial input.
 
