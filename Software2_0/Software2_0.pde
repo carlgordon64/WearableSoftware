@@ -17,6 +17,11 @@ float expandFinder=0;
 float expandPlayer=0;
 float expandBrowser=0;
 float x=0;
+//easing
+
+//
+
+
 //y= height of app teaser hover expansion
 float y=200;
 //y2 = width of app teaser hover expansion
@@ -26,7 +31,7 @@ float y3=0;
 float y4=0;
 float reversey=0;
 float easing = 0.2;
-float easing2 = 0.2;
+float easing2 = 0.3;
 
 boolean finderON=true;
 boolean playerON=false;
@@ -393,6 +398,8 @@ void finderdata() {
       fh=y;
       fill(0, 100, 0, 50);
       rect(fx, fy, fw, fh);
+      fill(0);
+      text("Finder",width/2,100);
     }
   }
 }
@@ -400,6 +407,7 @@ void playerdata() {
   if (playerON==true) {
     if (hoverState=="active") {
       //put the width on an ease
+      //this is the coloured player box
       px=width/2;
       py=height/2;
       //
@@ -407,6 +415,8 @@ void playerdata() {
       ph=y;
       fill(0, 0, 100, 50);
       rect(px, py, pw, ph);
+      fill(0);
+      text("Player",width/2,100);
     }
   }
 }
@@ -414,6 +424,7 @@ void browserdata() {
   if (browserON==true) {
     if (hoverState=="active") {
       //put the width on an ease
+       //this is the coloured area box
       bx=width/2;
       by=height/2;
       //
@@ -421,6 +432,8 @@ void browserdata() {
       bh=y;
       fill(0, 0, 0, 50);
       rect(bx, by, bw, bh);
+      fill(0);
+      text("Browser",width/2,100);
     }
   }
 }
