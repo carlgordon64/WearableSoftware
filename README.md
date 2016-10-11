@@ -1,14 +1,11 @@
 # WearableSoftware
 
-In this step I have started buiding the status bar for the top corner. This will provide diagnostic information about the connection between the garment and the software; in particular whether the connection is true, and whether the garment is transmitting data. The current time is displayed to the far right, this is to save the user from needing to minimize the window to check the time. 
-
-I have tweaked the fonts a bit and brought in Inconsolata Regular-16 for the top and Helvetica-18 for the carousel.
+This commit is just a save state before I start integrating the Bluetooth Functionality.
+I have a strong ble connection set up in another sketch but didnt want to risk bringing it in and comprimising the working data structure.
 
 Whats Next?
 
-- Smooth out the animation of the carousel. This might involve redesigning how the user iterates through the categories.
+- Bring in Bluetooth-Incoming connection from port [6] and make sure it is recieving the correct values from the arduino UNO.
 
-- Complete the status indicators with visual cues for Garment Status and Input.
-
-- Connect to Arduino UNO and test how the sketch responds to serial input.
+-Set up a potentiometer in the same circuit as the Bluetooth Module and have the values from that print through the Bluetooth module. These values can be divided into ranges to test how garment interaction will affect the code.  
 

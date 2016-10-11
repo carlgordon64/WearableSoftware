@@ -17,12 +17,15 @@ float expandFinder=0;
 float expandPlayer=0;
 float expandBrowser=0;
 float x=0;
+//y= height of app teaser hover expansion
 float y=200;
-float y2=200;
+//y2 = width of app teaser hover expansion
+float y2=300;
+
 float y3=0;
 float y4=0;
 float reversey=0;
-float easing = 0.03;
+float easing = 0.2;
 float easing2 = 0.2;
 
 boolean finderON=true;
@@ -33,10 +36,11 @@ float fx, fy, fw, fh;
 float px, py, pw, ph;
 float bx, by, bw, bh;
 
- int s = second(); 
-     int m = minute(); 
-     int h = hour(); 
-     String ampm;
+int s = second(); 
+int m = minute(); 
+
+int h = hour(); 
+String ampm;
 
 
 // This array stores the Prefabs
@@ -50,9 +54,12 @@ String hoverState = (hovertoggle[arrayCount2]);
 
 String[] toggleState = { "finder", "player", "browser" };
 int iterate =0;
+
+int FR= 60;
+
 void setup() {
   size(1280, 760);
-  smooth();
+
   photo = loadImage("blur2.jpg");
 }
 void Update()
@@ -95,9 +102,13 @@ void Update()
 
 
 void draw() {
-  frameRate(120);
-  background(#f1f3f2);
+  frameRate(FR);
+  smooth();
+  //background(#f1f3f2);
+  background(#00BBD6);
   //image(photo, 0, 0);
+
+
   float targetX = 40;
   float targetFocusHeight = height;
   float targetFocusWidth = width;
@@ -117,22 +128,19 @@ void draw() {
   //if set to y4 shape will fill screen width
   y4 += fullscreenW *easing;
 
-  //ellipse(x, y, 66, 66);
+  //vars to control placement of app teasers
   fx=width/2;
   fy=height/2;
-  px=width/2-230;
+  px=width/2-325;
   py=height/2;
-  bx=width/2+230;
+  bx=width/2+325;
   by=height/2;
   //Update();
   //println(toggleState[arrayCount]);
-  println(hovertoggle[arrayCount2]);
+  //println(hovertoggle[arrayCount2]);
   hoverState = (hovertoggle[arrayCount2]);
-  if (hoverState=="active") {
-    println("YES");
-  } else {
-    println("NO");
-  }
+
+  //array that helps toggle through the possible software states
   String softwareState = (toggleState[arrayCount]);
   if (softwareState=="finder") {
     expandFinder=x;
@@ -158,36 +166,41 @@ void draw() {
     finderON=false;
     playerON=false;
   }
-  fw=200+expandFinder;
+
+
+  //both width and height of app teasers are expanded by expand<TYPE>
+
   fh=200+expandFinder;
-  pw=200+expandPlayer;
+  fw=300+expandFinder;
+
   ph=200+expandPlayer;
-  bw=200+expandBrowser;
+  pw=300+expandPlayer;
+
   bh=200+expandBrowser;
+  bw=300+expandBrowser;
 
   if (hoverState == "active") {
     //finder is selected
     if (finderON==true) {
       fx=width/2;
       fy=height/2;
-      fw=y2;
-      fh=y;
+      fw=y2+130;
+      fh=y+80;
     }
     //player is selected
     if (playerON==true) {
       px=width/2;
       py=height/2;
-      pw=y2;
-      ph=y;
+      pw=y2+130;
+      ph=y+80;
     }
     //finder is selected
     if (browserON==true) {
       //put the width on an ease
-      bx=width/2+230;
+      bx=width/2;
       by=height/2;
-      bw=y2;
-      bh=y;
-      browserdata();
+      bw=y2+130;
+      bh=y+80;
     }
   }
   carousel_indicator2();
@@ -199,56 +212,12 @@ void draw() {
   //
   //listner events for handling user interaction
   //println(mouseX, mouseY);
-  //player hover
-  if (mouseX>=310&&mouseX<=510) {
-    if (mouseY>=283&&mouseY<=483) {
-      println("User Hover Player"); 
-      //hover player box animation
-      px=width/2-230;
-      py=height/2-20;
-      expandPlayer=30;
-      //playerON=true;
-      //finderON=false;
-    }
-  } else {
-    expandPlayer=0; 
-    // playerON=false;
-  }
-  //finder hover
-  if (mouseX>=540&&mouseX<=740) {
-    if (mouseY>=283&&mouseY<=483) {
-      println("User Hover Finder"); 
-      //hover finder box animation
-      fx=width/2;
-      fy=height/2-20;
-      //finderON=true;
-      expandFinder=30;
-    }
-  } else {
-    expandFinder=0; 
-    //finderON=false;
-  }
 
-  //browser hover
-  if (mouseX>=770&&mouseX<=970) {
-    if (mouseY>=283&&mouseY<=483) {
-      println("User Hover Browser"); 
-      //hover browser box animation
-      bx=width/2+230;
-      by=height/2-20;
-      expandBrowser=30;
-      // browserON=true;
-      //finderON=false;
-    }
-  } else {
-    expandBrowser=0; 
-    // browserON=false;
-  }
   //TAB IN TOP-RIGHT CORNER .. STATUS DISPLAY
-statusTab(width/2+100,30);
+  statusTab(width/2+100, 30);
   //
   font2 = loadFont("Helvetica-16.vlw");
-textFont(font2, 16);
+  textFont(font2, 16);
   //Finder
   finder(fx, fy, fw, fh);
   //Player
@@ -259,63 +228,93 @@ textFont(font2, 16);
   finderdata();
   playerdata();
   browserdata();
+  
+  //save frame for preview.mov
+  //saveFrame("frame-######.png");
 }
 
 //status text
-void statusTab(int x, int y){
-  fill(darkgrey);
+void statusTab(int x, int y) {
+  boolean GStatus = true;
+  boolean GInput = false;
+
+  if (mouseX>= 680 && mouseX<= width) {
+    if (mouseY<= 50 && mouseY>= 0) {
+      fill(255, 255, 255, 200);
+      rect(width-300, 0, 600, 100);
+    }
+  }
+
+  //println(mouseX,mouseY);
+
+ fill(darkgrey);
   font = loadFont("Inconsolata-Regular-16.vlw");
-textFont(font, 16);
-//status indicator
-text("Garment Status:", x, y);
+  textFont(font, 16);
+  String Opad ="";
+  //status indicator
+  text("Garment Status:", x, y);
+  //input indicator
+  text("Garment Input:", x+200, y);
+  //time
+  if (h>11) {
+    h=h-12;
+    ampm="am";
+  } else {
+    ampm="pm";
+  }
+  if (m<=9) {
+    Opad = "0";
+  } else {
+    Opad = "";
+  }
 
-//input indicator
-text("Garment Input:", x+200, y);
+  text( h+":"+Opad+m+" "+ampm, width-80, y);
 
-//time
-
-
-     if (h>11) {
-       h=h-12;
-       ampm="am";
-     }
-     else {
-       ampm="pm";
-     }
-     
- text( h+":"+m+" "+ampm, width-80, y);
-
+  //indicator conditionals
+  if (GStatus == true) {
+    fill(0, 255, 0, 200);
+    ellipse(x+130, y-5, 10, 10);
+  } else {
+    fill(225, 0, 0, 200);
+    ellipse(x+130, y-5, 10, 10);
+  }
+  //
+  if (GInput == true) {
+    fill(0, 255, 0, 200);
+    ellipse(x+330, y-5, 10, 10);
+  } else {
+    fill(225, 0, 0, 200);
+    ellipse(x+330, y-5, 10, 10);
+  }
 }
 
 //second carousel indicator design
 void carousel_indicator2() {
-
   selector=0;
-  //.33 needs to become a global variable that resets on press of shift
-
-
   strokeWeight(2);
   noStroke();
   //container for carousel indicator 
   //rect(width/2,height/2+260,200,60);
   //
+  fill(darkgrey);
+  text("PLAYER", (width/2-325)-(texSiz/2*3), height/2+150);
+  text("FINDER", (width/2)-(texSiz/2*3.5), height/2+150);
+  text("BROWSER", (width/2+325)-(texSiz/2*3.5), height/2+150);
+
   //placeholders
   fill(mediumgrey);
   rect(width/2, height/2+200, 60, 10);
   rect(width/2-100, height/2+200, 60, 10);
   rect(width/2+100, height/2+200, 60, 10);
 
-  //
-  //noFill();
-
   if (finderON==true) {
     colorDown = true;
     //if color down is true and c is greater than 0
     //start subtracting color
-    if (colorDown && c > 80) c-=7;
+    if (colorDown && c > 80) c-=15;
     //else if color down is false and c is less than 255
     //start adding color
-    else if (colorDown==false && c < 255) c+=2;
+    else if (colorDown==false && c < 255) c+=5;
     fill(c, c, c);
     rect(width/2, height/2+200, 60, 10);
   }
@@ -323,10 +322,10 @@ void carousel_indicator2() {
     colorDown = true;
     //if color down is true and c is greater than 0
     //start subtracting color
-    if (colorDown && c > 80) c-=7;
+    if (colorDown && c > 80) c-=15;
     //else if color down is false and c is less than 255
     //start adding color
-    else if (colorDown==false && c < 255) c+=2;
+    else if (colorDown==false && c < 255) c+=5;
     fill(c, c, c);
     rect(width/2-100, height/2+200, 60, 10);
   }
@@ -334,10 +333,10 @@ void carousel_indicator2() {
     colorDown = true;
     //if color down is true and c is greater than 0
     //start subtracting color
-    if (colorDown && c > 80) c-=7;
+    if (colorDown && c > 80) c-=15;
     //else if color down is false and c is less than 255
     //start adding color
-    else if (colorDown==false && c < 255) c+=2;
+    else if (colorDown==false && c < 255) c+=5;
     fill(c, c, c);
     rect(width/2+100, height/2+200, 60, 10);
   }
@@ -346,42 +345,42 @@ void carousel_indicator2() {
 
 //call all boxes
 void player(float x, float y, float w, float h) {
+  noStroke();
   //Player
   //center
-  fill(darkgrey);
-  text("PLAYER", (width/2-230)-(texSiz/2*3), height/2+160);
-  fill(mediumgrey);
-  if (hoverState=="active") {
-    rect(x, y, width, height);
+  if (playerON==true) {
+    stroke(0, 0, 0, 30);
   } else {
-    rect(x, y, w, h);
+    noStroke();
   }
+  fill(mediumgrey);
+  rect(x, y, w, h);
+
   //
 }
 void finder(float x, float y, float w, float h) {
+  noStroke();
   //Finder
   //center
-  fill(darkgrey);
-  text("FINDER", (width/2)-(texSiz/2*3.5), height/2+160);
-  fill(mediumgrey);
-  if (hoverState=="active") {
-    rect(x, y, width, height);
+  if (finderON==true) {
+    stroke(0, 0, 0, 30);
   } else {
-    rect(x, y, w, h);
+    noStroke();
   }
-  //
+  fill(mediumgrey);
+  rect(x, y, w, h);
 }
 void browser(float x, float y, float w, float h) {
+  noStroke();
   //Browser
   //center
-  fill(darkgrey);
-  text("BROWSER", (width/2+230)-(texSiz/2*3.5), height/2+160);
-  fill(mediumgrey);
-  if (hoverState=="active") {
-    rect(x, y, width, height);
+  if (browserON==true) {
+    stroke(0, 0, 0, 30);
   } else {
-    rect(x, y, w, h);
+    noStroke();
   }
+  fill(mediumgrey);
+  rect(x, y, w, h);
 }
 void finderdata() {
   if (finderON==true) {
@@ -389,6 +388,7 @@ void finderdata() {
       //put the width on an ease
       fx=width/2;
       fy=height/2;
+      //
       fw=y2;
       fh=y;
       fill(0, 100, 0, 50);
@@ -402,6 +402,7 @@ void playerdata() {
       //put the width on an ease
       px=width/2;
       py=height/2;
+      //
       pw=y2;
       ph=y;
       fill(0, 0, 100, 50);
@@ -415,6 +416,7 @@ void browserdata() {
       //put the width on an ease
       bx=width/2;
       by=height/2;
+      //
       bw=y2;
       bh=y;
       fill(0, 0, 0, 50);
