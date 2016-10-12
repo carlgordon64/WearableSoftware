@@ -1,11 +1,31 @@
+/*
+MDDN 351 - Wearable Tech
+ Avail - Operating System
+ Written by: Carl Gordon - 12/10/16 
+ */
+
 PImage photo;
 PImage playericos;
+//SYSTEM DIRECTORY
+int counter;
+//this sketch path
 String workingDIR = sketchPath("");
+//System path
+String path = "/Users/macuser/Desktop/NavTest";
+String Finderpath = "/Users/macuser/Desktop/NavTest/Finder";
+String Appspath = "/Users/macuser/Desktop/NavTest/Finder/Applications";
+String Docspath = "/Users/macuser/Desktop/NavTest/Finder/Documents";
+String Browserpath = "/Users/macuser/Desktop/NavTest/Browser/browsers";
+String Bookmarkspath = "/Users/macuser/Desktop/NavTest/Browser/bookmarks";
+String Playerpath = "/Users/macuser/Desktop/NavTest/Player";
+String Musicpath = "/Users/macuser/Desktop/NavTest/Player/Music";
+String Videopath = "/Users/macuser/Desktop/NavTest/Player/Video";
+//
 //colors
 PFont font;
 PFont font2;
 color lightgrey = (#f1f3f2);
-color mediumgrey = (#eaeaea);
+color mediumgrey = (#e0e0e0);
 color darkgrey = (#383838);
 color indicate = (mediumgrey);
 int c = 255;
@@ -48,7 +68,7 @@ int m = minute();
 int h = hour(); 
 String ampm;
 
- float colPush= 255;
+float colPush= 255;
 
 // This array stores the Prefabs
 // Integer for stepping through array Prefabs
@@ -66,7 +86,7 @@ int FR= 60;
 
 void setup() {
   size(1280, 760);
-H2 = loadFont("Helvetica-24.vlw");
+  H2 = loadFont("Helvetica-24.vlw");
   photo = loadImage("blur2.jpg");
   playericos = loadImage("Player_Ico.png");
 }
@@ -77,7 +97,7 @@ void Update()
     if (keyCode == UP) {
       y=200;
       y2=200;
-       colPush= 0;
+      colPush= 0;
       //slows down the loop to crete a toggle effect on key event
       frameRate(10);
       // Step to next position in array
@@ -114,12 +134,11 @@ void Update()
 void draw() {
   frameRate(FR);
   smooth();
-  //background(#f1f3f2);
-  background(#00BBD6);
+  background(#f1f2f3);
+  //background(#00BBD6);
   //image(photo, 0, 0);
-
-
-  float targetX = 40;
+  
+ float targetX = 40;
   float targetFocusHeight = height;
   float targetFocusWidth = width;
   float dx = targetX - x;
@@ -177,8 +196,7 @@ void draw() {
     playerON=false;
   }
 
-
-  //both width and height of app teasers are expanded by expand<TYPE>
+//both width and height of app teasers are expanded by expand<TYPE>
 
   fh=200+expandFinder;
   fw=300+expandFinder;
@@ -306,7 +324,7 @@ void carousel_indicator2() {
   //rect(width/2,height/2+260,200,60);
   //
   fill(darkgrey);
-    font2 = loadFont("Helvetica-16.vlw");
+  font2 = loadFont("Helvetica-16.vlw");
   textFont(font2, 16);
   text("PLAYER", (width/2-325)-(texSiz/2*3), height/2+150);
   text("FINDER", (width/2)-(texSiz/2*3.5), height/2+150);
@@ -360,7 +378,7 @@ void player(float x, float y, float w, float h) {
   //Player
   //center
   if (playerON==true) {
-    stroke(0, 0, 0, 30);
+    stroke(0, 0, 0, 10);
   } else {
     noStroke();
   }
@@ -374,7 +392,7 @@ void finder(float x, float y, float w, float h) {
   //Finder
   //center
   if (finderON==true) {
-    stroke(0, 0, 0, 30);
+    stroke(0, 0, 0, 10);
   } else {
     noStroke();
   }
@@ -386,13 +404,12 @@ void browser(float x, float y, float w, float h) {
   //Browser
   //center
   if (browserON==true) {
-    stroke(0, 0, 0, 30);
+    stroke(0, 0, 0, 10);
   } else {
     noStroke();
   }
   fill(mediumgrey);
   rect(x, y, w, h);
-  
 }
 void finderdata() {
   if (finderON==true) {
@@ -412,23 +429,21 @@ void finderdata() {
 void playerdata() {
   if (playerON==true) {
     if (hoverState=="active") {
-      
+
       //VOLUME CONTROLS
-      if(keyPressed==true){
-         if (keyCode == RIGHT) {
-      //launches max volume app from working directory
-      launch(workingDIR+"./MaxVolume.app");
-    }else if (keyCode == LEFT) {
-      //launches mute app from working directory
-      launch(workingDIR+"./LowVolume.app");
-      
-    } 
-    else if(keyCode == DOWN) {
-         launch(workingDIR+"./Spot_PausePlay.app");
-      }
+      if (keyPressed==true) {
+        if (keyCode == RIGHT) {
+          //launches max volume app from working directory
+          launch(workingDIR+"./MaxVolume.app");
+        } else if (keyCode == LEFT) {
+          //launches mute app from working directory
+          launch(workingDIR+"./LowVolume.app");
+        } else if (keyCode == DOWN) {
+          launch(workingDIR+"./Spot_PausePlay.app");
+        }
       }
       //END VOLUME CONTROLS
-      
+
       //put the width on an ease
       //this is the coloured player box
       px=width/2;
@@ -438,9 +453,8 @@ void playerdata() {
       ph=y;
       fill(0, 0, 100, 50);
       rect(px, py, pw, ph);
-     
+
       playerContent();
-     
     }
   }
 }
@@ -456,53 +470,127 @@ void browserdata() {
       bh=y;
       fill(0, 0, 0, 50);
       rect(bx, by, bw, bh);
-      
+
       browserContent();
     }
   }
 }
-void playerContent(){
- //colPush fades in content
+void playerContent() {
+  //colPush fades in content
   colPush+=8;
   println(colPush);
-   fill(255,255,255,colPush);
-   pushMatrix();
-      textFont(H2, 24);
-      text("Player", width/2-6*7, 100);
-noFill();
-      stroke(255,255,255,colPush);
-      rect(width/2,height/2,848,506);
-      rect(width/2,height/2,848,60);
-      tint(255, colPush);
-      imageMode(CENTER);
-      image(playericos, width/2, height/2);
+  fill(255, 255, 255, colPush);
+  pushMatrix();
+  textFont(H2, 24);
+  text("Player", width/2-6*7, 100);
+  noFill();
+  stroke(255, 255, 255, colPush);
+  rect(width/2, height/2, 848, 506);
+  rect(width/2, height/2, 848, 60);
+  tint(255, colPush);
+  imageMode(CENTER);
+  image(playericos, width/2, height/2);
   popMatrix();
-  
 }
 //
-void finderContent(){
- //colPush fades in content
+void finderContent() {
+  //colPush fades in content
   colPush+=8;
   println(colPush);
-   fill(255,255,255,colPush);
-   pushMatrix();
-      textFont(H2, 24);
-      text("Finder", width/2-6*7, 100);
-noFill();
-      stroke(255,255,255,colPush);
-      rect(width/2,height/2,100,100);
+  fill(255, 255, 255, colPush);
+  pushMatrix();
+  textFont(H2, 24);
+  text("Finder", width/2-6*7, 100);
+  text("Applications", width/2-212-(12*7), 200);
+  String[] appnames = listFileNames(Appspath);
+  //println(filenames);
+  for (int o = 1; o <appnames.length; o++) {
+    text(appnames[o], 227, 250+o*30);
+  }
+  text("Documents", width/2+212-(9*7), 200);
+  //SHOW ALL DOCUMENTS IN documents
+  String[] docnames = listFileNames(Docspath);
+  //println(filenames);
+  for (int o = 1; o <docnames.length; o++) {
+    text(docnames[o], width/2+10, 250+o*30);
+  }
+  noFill();
+  stroke(255, 255, 255, colPush);
+  rect(width/2, height/2, 848, 506);
+  rect(width/2-212, height/2, 424, 506);
   popMatrix();
 }
-void browserContent(){
- //colPush fades in content
+void browserContent() {
+  //colPush fades in content
   colPush+=8;
   println(colPush);
-   fill(255,255,255,colPush);
-   pushMatrix();
-      textFont(H2, 24);
-      text("Browser", width/2-6*7, 100);
-noFill();
-      stroke(255,255,255,colPush);
-      rect(width/2,height/2,100,100);
+  fill(255, 255, 255, colPush);
+  pushMatrix();
+  textFont(H2, 24);
+  text("Browser", width/2-6*7, 100);
+
+  //Path to all installed browsers
+  String[] browsernames = listFileNames(Browserpath);
+  //print all installed browsers
+  //println(browsernames);
+  for (int i2 = 1; i2 < browsernames.length; i2++) {
+    text(browsernames[i2], width/2, height/2+i2*60);
+  }
+
+  noFill();
+  stroke(255, 255, 255, colPush);
+  rect(width/2, height/2, 100, 100);
   popMatrix();
+}
+//FILE HANDLERS
+
+// This function returns all the files in a directory as an array of Strings  
+String[] listFileNames(String dir) {
+  File file = new File(dir);
+  if (file.isDirectory()) {
+    String names[] = file.list();
+    return names;
+  } else {
+    // If it's not a directory
+    return null;
+  }
+}
+
+// This function returns all the files in a directory as an array of File objects
+// This is useful if you want more info about the file
+File[] listFiles(String dir) {
+  File file = new File(dir);
+  if (file.isDirectory()) {
+    File[] files = file.listFiles();
+    return files;
+  } else {
+    // If it's not a directory
+    return null;
+  }
+}
+
+// Function to get a list of all files in a directory and all subdirectories
+ArrayList<File> listFilesRecursive(String dir) {
+
+  ArrayList<File> fileList = new ArrayList<File>(); 
+  recurseDir(fileList, dir);
+  return fileList;
+}
+
+// Recursive function to traverse subdirectories
+void recurseDir(ArrayList<File> a, String dir) {
+
+  File file = new File(dir);
+  if (file.isDirectory()) {
+    // If you want to include directories in the list
+    a.add(file);  
+    File[] subfiles = file.listFiles();
+    for (int i = 0; i < subfiles.length; i++) {
+      // Call this function on all files in this directory
+      counter ++;
+      recurseDir(a, subfiles[i].getAbsolutePath());
+    }
+  } else {
+    a.add(file);
+  }
 }
