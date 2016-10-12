@@ -1,5 +1,6 @@
 PImage photo;
-
+PImage playericos;
+String workingDIR = sketchPath("");
 //colors
 PFont font;
 PFont font2;
@@ -20,7 +21,7 @@ float x=0;
 //easing
 
 //
-
+PFont H2;
 
 //y= height of app teaser hover expansion
 float y=200;
@@ -47,6 +48,7 @@ int m = minute();
 int h = hour(); 
 String ampm;
 
+ float colPush= 255;
 
 // This array stores the Prefabs
 // Integer for stepping through array Prefabs
@@ -64,8 +66,9 @@ int FR= 60;
 
 void setup() {
   size(1280, 760);
-
+H2 = loadFont("Helvetica-24.vlw");
   photo = loadImage("blur2.jpg");
+  playericos = loadImage("Player_Ico.png");
 }
 void Update()
 {
@@ -74,6 +77,7 @@ void Update()
     if (keyCode == UP) {
       y=200;
       y2=200;
+       colPush= 0;
       //slows down the loop to crete a toggle effect on key event
       frameRate(10);
       // Step to next position in array
@@ -87,6 +91,7 @@ void Update()
     }
     if (keyCode == SHIFT) {
       selector=0;
+      colPush= 0;
       colorDown = false;
       c=255;
       x=0;
@@ -221,8 +226,7 @@ void draw() {
   //TAB IN TOP-RIGHT CORNER .. STATUS DISPLAY
   statusTab(width/2+100, 30);
   //
-  font2 = loadFont("Helvetica-16.vlw");
-  textFont(font2, 16);
+
   //Finder
   finder(fx, fy, fw, fh);
   //Player
@@ -233,7 +237,7 @@ void draw() {
   finderdata();
   playerdata();
   browserdata();
-  
+
   //save frame for preview.mov
   //saveFrame("frame-######.png");
 }
@@ -252,7 +256,7 @@ void statusTab(int x, int y) {
 
   //println(mouseX,mouseY);
 
- fill(darkgrey);
+  fill(darkgrey);
   font = loadFont("Inconsolata-Regular-16.vlw");
   textFont(font, 16);
   String Opad ="";
@@ -302,6 +306,8 @@ void carousel_indicator2() {
   //rect(width/2,height/2+260,200,60);
   //
   fill(darkgrey);
+    font2 = loadFont("Helvetica-16.vlw");
+  textFont(font2, 16);
   text("PLAYER", (width/2-325)-(texSiz/2*3), height/2+150);
   text("FINDER", (width/2)-(texSiz/2*3.5), height/2+150);
   text("BROWSER", (width/2+325)-(texSiz/2*3.5), height/2+150);
@@ -386,6 +392,7 @@ void browser(float x, float y, float w, float h) {
   }
   fill(mediumgrey);
   rect(x, y, w, h);
+  
 }
 void finderdata() {
   if (finderON==true) {
@@ -398,14 +405,30 @@ void finderdata() {
       fh=y;
       fill(0, 100, 0, 50);
       rect(fx, fy, fw, fh);
-      fill(0);
-      text("Finder",width/2,100);
+      finderContent();
     }
   }
 }
 void playerdata() {
   if (playerON==true) {
     if (hoverState=="active") {
+      
+      //VOLUME CONTROLS
+      if(keyPressed==true){
+         if (keyCode == RIGHT) {
+      //launches max volume app from working directory
+      launch(workingDIR+"./MaxVolume.app");
+    }else if (keyCode == LEFT) {
+      //launches mute app from working directory
+      launch(workingDIR+"./LowVolume.app");
+      
+    } 
+    else if(keyCode == DOWN) {
+         launch(workingDIR+"./Spot_PausePlay.app");
+      }
+      }
+      //END VOLUME CONTROLS
+      
       //put the width on an ease
       //this is the coloured player box
       px=width/2;
@@ -415,8 +438,9 @@ void playerdata() {
       ph=y;
       fill(0, 0, 100, 50);
       rect(px, py, pw, ph);
-      fill(0);
-      text("Player",width/2,100);
+     
+      playerContent();
+     
     }
   }
 }
@@ -424,7 +448,7 @@ void browserdata() {
   if (browserON==true) {
     if (hoverState=="active") {
       //put the width on an ease
-       //this is the coloured area box
+      //this is the coloured area box
       bx=width/2;
       by=height/2;
       //
@@ -432,8 +456,53 @@ void browserdata() {
       bh=y;
       fill(0, 0, 0, 50);
       rect(bx, by, bw, bh);
-      fill(0);
-      text("Browser",width/2,100);
+      
+      browserContent();
     }
   }
+}
+void playerContent(){
+ //colPush fades in content
+  colPush+=8;
+  println(colPush);
+   fill(255,255,255,colPush);
+   pushMatrix();
+      textFont(H2, 24);
+      text("Player", width/2-6*7, 100);
+noFill();
+      stroke(255,255,255,colPush);
+      rect(width/2,height/2,848,506);
+      rect(width/2,height/2,848,60);
+      tint(255, colPush);
+      imageMode(CENTER);
+      image(playericos, width/2, height/2);
+  popMatrix();
+  
+}
+//
+void finderContent(){
+ //colPush fades in content
+  colPush+=8;
+  println(colPush);
+   fill(255,255,255,colPush);
+   pushMatrix();
+      textFont(H2, 24);
+      text("Finder", width/2-6*7, 100);
+noFill();
+      stroke(255,255,255,colPush);
+      rect(width/2,height/2,100,100);
+  popMatrix();
+}
+void browserContent(){
+ //colPush fades in content
+  colPush+=8;
+  println(colPush);
+   fill(255,255,255,colPush);
+   pushMatrix();
+      textFont(H2, 24);
+      text("Browser", width/2-6*7, 100);
+noFill();
+      stroke(255,255,255,colPush);
+      rect(width/2,height/2,100,100);
+  popMatrix();
 }
